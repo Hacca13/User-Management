@@ -2,7 +2,7 @@ import { Request, Response } from "express"
 import { Result } from "../../types/routes"
 import { UserModel } from "../../models"
 import { User } from "../../types/model"
-import { PipelineStage } from "mongoose"
+import { PatchUserDto } from "../../types/validation"
 
 
 
@@ -41,27 +41,29 @@ export const createUser = async (req: Request, res: Response<Result<User>>) => {
   return res.status(201).send({ success: true, data: savedUser })
 }
 
-export const updateUser = async (req: Request, res: Response<Result<any>>) => {
-  // const id = req.params.id
-  // const userRequest = req.body
-  // const { email } = userRequest
- 
-  // if(email !== undefined) {
-  //   const userResult = await UserModel.findOne({email})
+export const updateUser = async (req: Request, res: Response<Result<User>>) => {
+  const id = req.params.id
+  const user = req.body as PatchUserDto
+  const idOwner = user.id
 
+  // Check if the id is already used by another user
+  if(idOwner !== undefined) {
+    const idNumber = parseInt(id)
+    const idOwnerExist = await UserModel.findOne({id: idOwner}) as User
+
+    if (idOwnerExist && (idOwnerExist.id != idNumber)) {
+      return res.status(400).send({ success: false, message: "Id already used" })
+    }
+  } 
   
-  //   if (userResult && (!userResult._id.equals(id))) {
-  //     return res.status(400).send({ success: false, message: "Email already used" })
-  //   }
-  // }
-  
-  // const user = await UserModel.findByIdAndUpdate(id, req.body, { new: true })
+  // Update the user
+  const updatedUser = await UserModel.findOneAndUpdate({id}, user, {new: true})
+
+  if(!updatedUser) {
+    return res.status(404).send({success:false , message: "User not found"})
+  }
  
-  // if (!user) {
-  //   return res.status(404).send({ success: false, message: "Cannot find a user with the specified ID" })
-  // }
-  // return res.status(200).send({ success: true, data: user })
-  return res.status(200).send({success:true , data: "This API is not implemented yet"})
+  return res.status(200).send({success:true , data: updatedUser})
 }
 
 export const deleteUser = async (req: Request, res: Response<Result<string>>) => {
