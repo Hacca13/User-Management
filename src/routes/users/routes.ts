@@ -1,5 +1,7 @@
 import { Router } from "express"
 
+import { validateBody, validateParams } from "../../middleware"
+
 import {
   retriveData,
   createUser,
@@ -9,13 +11,15 @@ import {
   updateUser,
 } from "./handler"
 
+import { validateCreateUser, validateUserId } from "../../validation"
+
 const userRoutes = Router()
 
 userRoutes.get("/retrive-data", retriveData)
 userRoutes.get("/users", getAll)
-userRoutes.post("/users", createUser)
-userRoutes.get("/users/:id", getById)
-userRoutes.patch("/users/:id", updateUser)
-userRoutes.delete("/users/:id", deleteUser)
+userRoutes.post("/users", validateBody(validateCreateUser),createUser)
+userRoutes.get("/users/:id", validateParams(validateUserId), getById)
+userRoutes.patch("/users/:id", validateParams(validateUserId), updateUser)
+userRoutes.delete("/users/:id", validateParams(validateUserId),  deleteUser)
 
 export default userRoutes

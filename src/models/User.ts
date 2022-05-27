@@ -10,13 +10,16 @@ const UserSchema = new mongoose.Schema<User>(
       unique: true,
     },
     /** The user first name */
-    firstname: String,
+    firstName: String,
     /** The user last name */
-    lastname: String,
+    lastName: String,
     /** The user email */
     email: String,
     /** The user gender */
-    gender: ["Male" , "Female" , "Unspecified"],
+    gender: {
+      type: String,
+      enum:["Male" , "Female" , "Unspecified"]
+    },
     /** The user birthday*/
     birthday: Number,
     /** The user is Active*/

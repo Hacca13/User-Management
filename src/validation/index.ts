@@ -1,7 +1,7 @@
 import Ajv, { DefinedError } from "ajv"
 import {
   createUserSchema,
-
+  mongooseIdSchema
 } from "./users"
 import addFormats from "ajv-formats"
 import { ValidationOption } from "../types/validation"
@@ -12,6 +12,7 @@ addFormats(ajv)
 
 // Defining validation function
 export const validateCreateUser = ajv.compile(createUserSchema)
+export const validateUserId = ajv.compile(mongooseIdSchema)
 
 
 export const buildErrorMessage = (field: ValidationOption, errors: DefinedError[]): string => {

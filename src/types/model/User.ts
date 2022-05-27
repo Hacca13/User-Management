@@ -2,9 +2,9 @@ export interface User {
   /** The user id */
   id: number,
   /** The user first name */
-  firstname: string
+  firstName: string
   /** The user last name */
-  lastname: string
+  lastName: string
   /** The user email */
   email: string
   /** The user gender */

@@ -6,13 +6,13 @@ export const createUserSchema: JSONSchemaType<CreateUserDTO> = {
   properties: {
     id: {
       type: "number",
-      minimum: 1,
+      minimum: 1
     },  
-    firstname:{
+    firstName:{
       type: "string",
       minLength: 1,
     },
-    lastname:{
+    lastName:{
       type: "string",
       minLength: 1,
     },
@@ -37,11 +37,24 @@ export const createUserSchema: JSONSchemaType<CreateUserDTO> = {
       minLength: 1,
     },
     lastAccess: {
-      mac: "string",
-      ip: "string",
-      userAgent: "string",
+      type: "object",
+      properties: {
+        mac: {
+          type: "string",
+          minLength: 1,
+        },
+        ip: {
+          type: "string",
+          minLength: 1,
+        },
+        userAgent: {
+          type: "string",
+          minLength: 1,
+        }
+      },
+      required: ["mac", "ip", "userAgent"]
     },    
   },
-  required: ["id", "firstname", "lastname", "email", "gender", "birthday", "isActive", "desctiption", "lastAccess"],
+  required: ["id", "firstName", "lastName", "email", "gender", "birthday", "isActive", "desctiption", "lastAccess"],
   additionalProperties: false,
 }
