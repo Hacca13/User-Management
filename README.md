@@ -24,7 +24,7 @@ npm install
 
 In development
 
-Be sure to have a correct default.json configuration file in src folder then run this command to set an environment variable:
+Be sure to have a correct custom-environment-variables.json configuration file in src folder then run this command to set an environment variable:
 
 **On Windows powershell:**
 

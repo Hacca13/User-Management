@@ -12,7 +12,7 @@ export const getAll = async (req: Request, res: Response<Result<User[]>>) => {
   return res.status(200).send({ success: true, data: users })
 }
 
-export const getById = async (req: Request, res: Response<Result<any>>) => {
+export const getById = async (req: Request, res: Response<Result<User>>) => {
   const id = req.params.id
   const user = (await UserModel.findOne({ id })) as User
   if (!user) {
@@ -22,7 +22,7 @@ export const getById = async (req: Request, res: Response<Result<any>>) => {
   return res.status(200).send({ success: true, data: user })
 }
 
-export const retriveData = async (req: Request, res: Response<Result<any>>) => {
+export const retriveData = async (req: Request, res: Response<Result<string>>) => {
   const arrayUser = await getUserList() as User[]
   
 
