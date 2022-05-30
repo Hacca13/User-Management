@@ -1,0 +1,314 @@
+swagger: "2.0"
+info:
+  description: "This is a sample server Petstore server.  You can find out more about     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample, you can use the api key `special-key` to test the authorization     filters."
+  version: "1.0.0"
+  title: "User Management"
+  contact:
+    email: "v.noviello3@gmail.com"
+basePath: "/"
+
+schemes:
+- "https"
+- "http"
+paths:
+  /users:
+    get:
+      security: []  
+      tags:
+      - "users"
+      summary: "Get All User"
+      description: "This API return all user."
+      operationId: "GetAll"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/GetAllResponse"
+        "500":
+          description: "Failure operation"
+          schema:
+            $ref: "#/definitions/FailResponse"
+
+    post:
+      security: []      
+      tags:
+        - "users"
+      summary: "Create users"
+      description: "This API creates a user."
+      operationId: "createUser"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "List of user object"
+          required: true
+          schema:
+            $ref: "#/definitions/User"
+      responses:
+        "201":
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/ResponseWithUser"
+        "400":
+          description: "Id already used"
+          schema:
+            $ref: "#/definitions/FailResponse"
+        "500":
+          description: "Failure operation"
+          schema:
+            $ref: "#/definitions/FailResponse"  
+
+
+  /users/{id}:
+    get:
+      security: []
+      tags:
+      - "users"
+      summary: "Return a user by id"
+      description: "This API return a user by id."
+      operationId: "getUserById"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "User Id."
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/ResponseWithUser"
+        "404":
+          description: "Cannot find a user with the specified ID"
+          schema:
+            $ref: "#/definitions/FailResponse"
+        "500":
+          description: "Failure operation"
+          schema:
+            $ref: "#/definitions/FailResponse"
+     
+    patch:
+      security: []
+      tags:
+      - "users"
+      summary: "Patch User"
+      description: "This API patch a user"
+      operationId: "PatchUser"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "List of user object"
+        schema:
+          $ref: "#/definitions/PatchUserRequest"
+      - name: "id"
+        in: "path"
+        description: "User ID."
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/ResponseWithUser"
+        "400":
+          description: "ID already used"
+          schema:
+            $ref: "#/definitions/FailResponse"    
+        "404":
+          description: "Cannot find a user with the specified ID"
+          schema:
+            $ref: "#/definitions/FailResponse"
+        "500":
+          description: "Failure operation"
+          schema:
+            $ref: "#/definitions/FailResponse"
+          
+    delete:
+      security: []
+      tags:
+      - "users"
+      summary: "Delete user"
+      description: "This API delete a user."
+      operationId: "DeleteUser"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The id that needs to be deleted"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/ResponseString"
+        "404":
+          description: "Cannot find a user with the specified ID"
+          schema:
+            $ref: "#/definitions/FailResponse"
+        "500":
+          description: "Failure operation"
+          schema:
+            $ref: "#/definitions/FailResponse"
+    
+  /retrive-data:
+    get:
+      security: []
+      tags:
+      - "users"
+      summary: "Finds Pets by tags"
+      description: "Muliple tags can be provided with comma separated strings. Use         tag1, tag2, tag3 for testing."
+      operationId: "findPetsByTags"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "tags"
+        in: "query"
+        description: "Tags to filter by"
+        required: true
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/ResponseString"
+        "400":
+          description: "Failure operation"
+          schema:
+            $ref: "#/definitions/FailResponse"
+      
+    
+
+
+    
+definitions:
+  User:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      firstName:
+        type: "string"
+      lastName:
+        type: "string"
+      email:
+        type: "string"
+      gender:
+        type: "string"
+        enum: 
+          - "Male"
+          - "Female"
+          - "Unspecified"
+      birthday:
+        type: "integer"
+      isActive:
+        type: "boolean"
+      desctiption:
+        type: "string"
+      lastAccess:
+        type: "object"
+        properties:
+          mac:
+            type: "string"
+          ip:
+            type: "string"
+          userAgent:
+            type: "string"
+        required: 
+          - mac
+          - id
+          - userAgent
+    required:
+      - id
+      - firstName
+      - lastName
+      - email
+      - gender
+      - birthday
+      - isActive
+      - desctiption
+      - lastAccess
+      
+  ResponseWithUser:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+        default: "true"
+      data:
+        $ref: "#/definitions/User"
+      
+  ResponseString:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+        default: "true"
+      data:
+        type: "string"
+    
+  GetAllResponse:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+        default: "true"
+      data:
+        type: "array"
+        items:
+          type: "object"
+          $ref: "#/definitions/User"
+          
+  FailResponse:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+        default: "false"
+      message:
+        type: "string"
+        
+  PatchUserRequest:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      firstName:
+        type: "string"
+      lastName:
+        type: "string"
+      email:
+        type: "string"
+      gender:
+        type: "string"
+        enum: 
+          - "Male"
+          - "Female"
+          - "Unspecified"
+      birthday:
+        type: "integer"
+      isActive:
+        type: "boolean"
+      desctiption:
+        type: "string"
+      lastAccess:
+        type: "object"
+        properties:
+          mac:
+            type: "string"
+          ip:
+            type: "string"
+          userAgent:
+            type: "string"
