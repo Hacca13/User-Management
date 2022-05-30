@@ -4,8 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha -r ts-node/register 'test/**/*.test.ts'",
-    "coverage": "nyc npm run test",
     "build": "tsc -p tsconfig.json",
     "start": "node dist/src/index.js",
     "dev": "nodemon src/index.ts"

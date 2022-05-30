@@ -52,25 +52,6 @@ In development
 npm run dev
 ```
 
-## Run tests
-
-```sh
-npm run test
-```
-
-### Setup
-
-**On Windows powershell:**
-
-```shell
-$ENV:NODE_CONFIG_DIR="src/config"
-```
-
-**On Linux shell:**
-
-```shell
-export NODE_CONFIG_DIR=./src/config
-```
 
 ## Author
 
